@@ -38,9 +38,7 @@ class GildedRose(var items: Array<Item>) {
                 }
             }
 
-            if (item.name != sulfuras) {
-                item.sellIn = item.sellIn - 1
-            }
+            updateSellIn(item)
 
             if (item.sellIn < 0) {
                 if (item.name != agedBrie) {
@@ -59,6 +57,12 @@ class GildedRose(var items: Array<Item>) {
                     }
                 }
             }
+        }
+    }
+
+    private fun updateSellIn(item: Item) {
+        if (item.name != sulfuras) {
+            item.sellIn = item.sellIn - 1
         }
     }
 
