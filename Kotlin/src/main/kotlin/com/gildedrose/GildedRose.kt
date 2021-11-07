@@ -23,14 +23,12 @@ class GildedRose(var items: Array<Item>) {
             item.sellIn = updateSellIn(item)
 
             if (negativeSellIn(item)) {
-                if (item.name != agedBrie) {
-                    if (item.name != backStagePasses) {
-                        item.quality = decreaseQuality(item)
-                    } else {
-                        item.quality = 0
-                    }
-                } else {
+                if (item.name == agedBrie) {
                     item.quality = increaseQuality(item)
+                } else if (item.name != backStagePasses) {
+                    item.quality = decreaseQuality(item)
+                } else {
+                    item.quality = 0
                 }
             }
         }
