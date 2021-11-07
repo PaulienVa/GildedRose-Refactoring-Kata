@@ -13,11 +13,7 @@ class GildedRose(var items: Array<Item>) {
     fun updateQuality() {
         for (item in items) {
             if (item.name != agedBrie && item.name != backStagePasses) {
-                if (positiveQuality(item)) {
-                    if (item.name != sulfuras) {
-                        item.quality = item.quality - 1
-                    }
-                }
+                item.quality = decreaseQuality(item)
             } else {
                 if (item.quality < maximumQuality) {
                     item.quality = item.quality + 1
@@ -43,11 +39,7 @@ class GildedRose(var items: Array<Item>) {
             if (negativeSellIn(item)) {
                 if (item.name != agedBrie) {
                     if (item.name != backStagePasses) {
-                        if (positiveQuality(item)) {
-                            if (item.name != sulfuras) {
-                                item.quality = item.quality - 1
-                            }
-                        }
+                        item.quality = decreaseQuality(item)
                     } else {
                         item.quality = item.quality - item.quality
                     }
@@ -59,6 +51,8 @@ class GildedRose(var items: Array<Item>) {
             }
         }
     }
+
+
 
     private fun negativeSellIn(item: Item) = item.sellIn < 0
 
@@ -72,5 +66,12 @@ class GildedRose(var items: Array<Item>) {
         }
     }
 
+    private fun decreaseQuality(item: Item): Int {
+        return if (positiveQuality(item) && item.name != sulfuras) {
+            item.quality - 1
+        } else {
+            item.quality
+        }
+    }
 }
 
