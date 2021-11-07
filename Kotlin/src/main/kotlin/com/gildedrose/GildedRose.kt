@@ -20,15 +20,11 @@ class GildedRose(var items: Array<Item>) {
 
                     if (item.name == backStagePasses) {
                         if (item.sellIn < minimalNormalSellInBackStage) {
-                            if (item.quality < maximumQuality) {
-                                item.quality = item.quality + 1
-                            }
+                            item.quality = increaseQuality(item)
                         }
 
                         if (item.sellIn < minimalHighSellInBackStage) {
-                            if (item.quality < maximumQuality) {
-                                item.quality = item.quality + 1
-                            }
+                            item.quality = increaseQuality(item)
                         }
                     }
                 }
@@ -44,14 +40,19 @@ class GildedRose(var items: Array<Item>) {
                         item.quality = 0
                     }
                 } else {
-                    if (item.quality < maximumQuality) {
-                        item.quality = item.quality + 1
-                    }
+                    item.quality = increaseQuality(item)
                 }
             }
         }
     }
 
+    private fun increaseQuality(item: Item) : Int {
+        return  if (item.quality < maximumQuality) {
+            item.quality + 1
+        } else   {
+            item.quality
+        }
+    }
 
 
     private fun negativeSellIn(item: Item) = item.sellIn < 0
