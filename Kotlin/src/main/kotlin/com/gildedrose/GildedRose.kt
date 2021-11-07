@@ -38,7 +38,7 @@ class GildedRose(var items: Array<Item>) {
                 }
             }
 
-            updateSellIn(item)
+            item.sellIn = updateSellIn(item)
 
             if (negativeSellIn(item)) {
                 if (item.name != agedBrie) {
@@ -64,9 +64,11 @@ class GildedRose(var items: Array<Item>) {
 
     private fun positiveQuality(item: Item) = item.quality > 0
 
-    private fun updateSellIn(item: Item) {
-        if (item.name != sulfuras) {
-            item.sellIn = item.sellIn - 1
+    private fun updateSellIn(item: Item): Int {
+        return if (item.name != sulfuras) {
+             item.sellIn - 1
+        } else  {
+            item.sellIn
         }
     }
 
