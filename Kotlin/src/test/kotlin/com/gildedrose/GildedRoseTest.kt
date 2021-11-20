@@ -133,12 +133,12 @@ internal class GildedRoseTest {
         updatedItem hasQuality 0
     }
 
-    @Test @Disabled // fail initialy
+    @Test
     fun `'Conjured' items degrade in Quality twice as fast as normal items`()  {
         val updatedItem = updateQuality(name = conjured, quality = 10)
 
         updatedItem hasName conjured
-        updatedItem hasSellIn defaultSellIn
+        updatedItem hasSellIn defaultSellIn - 1
         updatedItem hasQuality 8
     }
 
