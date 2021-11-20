@@ -14,23 +14,23 @@ class GildedRose(var items: Array<Item>) {
     fun updateQuality() {
         for (item in items) {
             if (item.isConjured()) {
-               item.quality = decreaseQuality(item)
-               item.quality = decreaseQuality(item)
+               item.quality = item.decreaseQuality()
+               item.quality = item.decreaseQuality()
             } else if (!item.isAgedBrie() && !item.isBackStagePasses()) {
-                item.quality = decreaseQuality(item)
+                item.quality = item.decreaseQuality()
             } else if (item.isBackStagePasses()) {
-                item.quality =  increaseQualityForBackStagePasses(item)
+                item.quality =  item.increaseQualityForBackStagePasses()
             } else {
-                item.quality = increaseQuality(item)
+                item.quality = item.increaseQuality()
             }
 
             item.sellIn = updateSellIn(item)
 
-            if (negativeSellIn(item)) {
+            if (item.hasNegativeSellIn()) {
                 if (item.isAgedBrie()) {
-                    item.quality = increaseQuality(item)
+                    item.quality = item.increaseQuality()
                 } else if (!item.isBackStagePasses()) {
-                    item.quality = decreaseQuality(item)
+                    item.quality = item.decreaseQuality()
                 } else {
                     item.quality = 0
                 }
@@ -44,26 +44,25 @@ class GildedRose(var items: Array<Item>) {
     private fun Item.isSulfuras() = this.name == sulfuras
     private fun Item.hasValidQuality() = this.quality in 1 until maximumQuality
     private fun Item.hasNoQuality() = this.quality == 0
+    private fun Item.hasNegativeSellIn() = this.sellIn < 0
 
-    private fun negativeSellIn(item: Item) = item.sellIn < 0
-
-    private fun increaseQualityForBackStagePasses(item: Item) : Int {
-        return when (item.sellIn) {
+    private fun Item.increaseQualityForBackStagePasses() : Int {
+        return when (this.sellIn) {
             in minimalHighSellInBackStage .. minimalNormalSellInBackStage -> {
-                increaseQuality(item, 2)
+                this.increaseQuality(2)
             }
             in 1 .. minimalHighSellInBackStage -> {
-                increaseQuality(item, 3)
+                this.increaseQuality(3)
             }
             else -> {
-                increaseQuality(item)
+                this.increaseQuality()
             }
         }
     }
 
-    private fun increaseQuality(item: Item,  step : Int = 1) : Int {
-        return  if (item.hasValidQuality()) {
-            item.quality + step
+    private fun Item.increaseQuality(step : Int = 1) : Int {
+        return  if (this.hasValidQuality()) {
+            this.quality + step
         } else {
             maximumQuality
         }
@@ -77,11 +76,11 @@ class GildedRose(var items: Array<Item>) {
         }
     }
 
-    private fun decreaseQuality(item: Item): Int {
-        return if (( item.hasValidQuality()) && !item.isSulfuras()) {
-            item.quality - 1
-        } else if (item.isSulfuras() || item.hasNoQuality()) {
-            item.quality
+    private fun Item.decreaseQuality(): Int {
+        return if (this.hasValidQuality() && !this.isSulfuras()) {
+            this.quality - 1
+        } else if (this.isSulfuras() || this.hasNoQuality()) {
+            this.quality
         } else {
             maximumQuality
         }
