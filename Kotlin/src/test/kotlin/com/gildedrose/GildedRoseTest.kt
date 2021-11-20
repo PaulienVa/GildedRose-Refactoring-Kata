@@ -49,7 +49,7 @@ internal class GildedRoseTest {
     }
 
     @Test
-    fun  `"Aged Brie" actually increases in Quality the older it gets`(){
+    fun  `'Aged Brie' actually increases in Quality the older it gets`(){
         val updatedItem = updateQuality(name = agedBrie, quality =  10)
 
         updatedItem hasName agedBrie
@@ -59,7 +59,7 @@ internal class GildedRoseTest {
 
 
     @Test
-    fun  `"Aged Brie" actually increases in Quality the older it gets - even with negative sellIn`(){
+    fun  `'Aged Brie' actually increases in Quality the older it gets - even with negative sellIn`(){
         val updatedItem = updateQuality(name = agedBrie, sellIn = -11, quality =  10)
 
         updatedItem hasName agedBrie
@@ -73,10 +73,10 @@ internal class GildedRoseTest {
 
         updatedItem hasName foo
         updatedItem hasSellIn 2
-        updatedItem hasQuality 49
+        updatedItem hasQuality 50
     }
 
-    @Test @Disabled // will fail initialy
+    @Test
     fun `The Quality of an item is never more than 50 - although higher than 50`() {
         val updatedItem = updateQuality(quality = 65)
 
@@ -87,7 +87,7 @@ internal class GildedRoseTest {
 
 
     @Test
-    fun `"Sulfuras", being a legendary item, never has to be sold or decreases in Quality`() {
+    fun `'Sulfuras', being a legendary item, never has to be sold or decreases in Quality`() {
         val updatedItem = updateQuality(name = sulfuras, quality = 10)
 
         updatedItem hasName sulfuras
@@ -96,7 +96,7 @@ internal class GildedRoseTest {
     }
 
     @Test
-    fun `"Sulfuras", as a legendary item and as such its Quality is 80 and it never alters`() {
+    fun `'Sulfuras', as a legendary item and as such its Quality is 80 and it never alters`() {
         val updatedItem = updateQuality(name = sulfuras, quality = 80)
 
         updatedItem hasName sulfuras
@@ -106,7 +106,7 @@ internal class GildedRoseTest {
 
     @ParameterizedTest
     @ValueSource(ints = [6, 7, 8, 9, 10])
-    fun `"Backstage passes", like aged brie, increases in Quality as its SellIn value approaches -  Quality increases by 2 when there are 10 days or less`(sellIn: Int) {
+    fun `'Backstage passes', like aged brie, increases in Quality as its SellIn value approaches -  Quality increases by 2 when there are 10 days or less`(sellIn: Int) {
         val updatedItem = updateQuality(name = backStagePasses, sellIn = sellIn, quality = 10)
 
         updatedItem hasName backStagePasses
@@ -116,7 +116,7 @@ internal class GildedRoseTest {
 
     @ParameterizedTest
     @ValueSource(ints = [1, 2, 3, 4, 5])
-    fun `"Backstage passes", like aged brie, increases in Quality as its SellIn value approaches -  Quality increases by 3 when there are 5 days or less`(sellIn: Int) {
+    fun `'Backstage passes', like aged brie, increases in Quality as its SellIn value approaches -  Quality increases by 3 when there are 5 days or less`(sellIn: Int) {
         val updatedItem = updateQuality(name = backStagePasses, sellIn = sellIn, quality = 10)
 
         updatedItem hasName backStagePasses
@@ -125,7 +125,7 @@ internal class GildedRoseTest {
     }
 
     @Test
-    fun `"Backstage passes", like aged brie, increases in Quality as its SellIn value approaches - Quality drops to 0 after the concert`() {
+    fun `'Backstage passes', like aged brie, increases in Quality as its SellIn value approaches - Quality drops to 0 after the concert`() {
         val updatedItem = updateQuality(name = backStagePasses, sellIn = 0, quality = 10)
 
         updatedItem hasName backStagePasses
@@ -134,7 +134,7 @@ internal class GildedRoseTest {
     }
 
     @Test @Disabled // fail initialy
-    fun `"Conjured" items degrade in Quality twice as fast as normal items`()  {
+    fun `'Conjured' items degrade in Quality twice as fast as normal items`()  {
         val updatedItem = updateQuality(name = conjured, quality = 10)
 
         updatedItem hasName conjured
@@ -155,8 +155,8 @@ internal class GildedRoseTest {
         fun negativeQualityAndSellIn() = Stream.of(
             Arguments.of(0, 0),
             Arguments.of(0, -10),
-//            Arguments.of(-1, -10),
-//            Arguments.of(-1, 0),
+            Arguments.of(-1, -10),
+            Arguments.of(-1, 0),
         )
     }
 }
