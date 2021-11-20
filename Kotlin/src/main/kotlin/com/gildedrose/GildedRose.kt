@@ -13,12 +13,12 @@ class GildedRose(var items: Array<Item>) {
 
     fun updateQuality() {
         for (item in items) {
-            if (item.name == conjured) {
+            if (item.isConjured()) {
                item.quality = decreaseQuality(item)
                item.quality = decreaseQuality(item)
-            } else if (item.name != agedBrie && item.name != backStagePasses) {
+            } else if (!item.isAgedBrie() && !item.isBackStagePasses()) {
                 item.quality = decreaseQuality(item)
-            } else if (item.name == backStagePasses) {
+            } else if (item.isBackStagePasses()) {
                 item.quality =  increaseQualityForBackStagePasses(item)
             } else {
                 item.quality = increaseQuality(item)
@@ -27,9 +27,9 @@ class GildedRose(var items: Array<Item>) {
             item.sellIn = updateSellIn(item)
 
             if (negativeSellIn(item)) {
-                if (item.name == agedBrie) {
+                if (item.isAgedBrie()) {
                     item.quality = increaseQuality(item)
-                } else if (item.name != backStagePasses) {
+                } else if (!item.isBackStagePasses()) {
                     item.quality = decreaseQuality(item)
                 } else {
                     item.quality = 0
@@ -37,6 +37,13 @@ class GildedRose(var items: Array<Item>) {
             }
         }
     }
+
+    private fun Item.isConjured() = this.name == conjured
+    private fun Item.isAgedBrie() = this.name == agedBrie
+    private fun Item.isBackStagePasses() = this.name == backStagePasses
+    private fun Item.isSulfuras() = this.name == sulfuras
+    private fun Item.hasValidQuality() = this.quality in 1 until maximumQuality
+    private fun Item.hasNoQuality() = this.quality == 0
 
     private fun negativeSellIn(item: Item) = item.sellIn < 0
 
@@ -55,7 +62,7 @@ class GildedRose(var items: Array<Item>) {
     }
 
     private fun increaseQuality(item: Item,  step : Int = 1) : Int {
-        return  if (item.quality < maximumQuality) {
+        return  if (item.hasValidQuality()) {
             item.quality + step
         } else {
             maximumQuality
@@ -63,7 +70,7 @@ class GildedRose(var items: Array<Item>) {
     }
 
     private fun updateSellIn(item: Item): Int {
-        return if (item.name != sulfuras) {
+        return if (!item.isSulfuras()) {
              item.sellIn - 1
         } else  {
             item.sellIn
@@ -71,9 +78,9 @@ class GildedRose(var items: Array<Item>) {
     }
 
     private fun decreaseQuality(item: Item): Int {
-        return if (( item.quality in 1 until maximumQuality) && item.name != sulfuras) {
+        return if (( item.hasValidQuality()) && !item.isSulfuras()) {
             item.quality - 1
-        } else if (item.name == sulfuras || item.quality == 0) {
+        } else if (item.isSulfuras() || item.hasNoQuality()) {
             item.quality
         } else {
             maximumQuality
